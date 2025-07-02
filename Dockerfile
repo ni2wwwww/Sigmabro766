@@ -1,10 +1,19 @@
 # Use an official PHP-FPM image as a base
 FROM php:8.2-fpm-alpine
 
-# Install system dependencies: Nginx and Git
-RUN apk --no-cache add nginx git
+# Install system dependencies: Nginx, Git, and development libraries for curl
+# >> FIX: Added curl-dev, libzip-dev, and other build dependencies
+RUN apk update && apk --no-cache add \
+    nginx \
+    git \
+    curl-dev \
+    libzip-dev \
+    oniguruma-dev \
+    libxml2-dev \
+    build-base
 
 # Install the PHP cURL extension
+# This command should now succeed
 RUN docker-php-ext-install curl
 
 # Set the working directory
